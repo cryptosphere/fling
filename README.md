@@ -1,6 +1,8 @@
 Fling
 =====
 [![Build Status](https://travis-ci.org/cryptosphere/fling.svg)](https://travis-ci.org/cryptosphere/fling)
+[![Code Climate](https://codeclimate.com/github/cryptosphere/fling/badges/gpa.svg)](https://codeclimate.com/github/cryptosphere/fling)
+[![Coverage Status](https://coveralls.io/repos/cryptosphere/fling/badge.svg)](https://coveralls.io/r/cryptosphere/fling)
 
 Simple secret sharing over Tahoe-LAFS.
 
