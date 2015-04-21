@@ -35,7 +35,14 @@ Or install it yourself as:
 
 ## Usage
 
-Coming soon!
+Once fling has been installed, you can use it to install a local Tahoe-LAFS
+client by running the following command:
+
+    $ fling setup
+
+(NOTE: This command is presently only supported on OS X)
+
+This will download and install a local copy of Tahoe-LAFS.
 
 ## Contributing
 
