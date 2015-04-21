@@ -1,5 +1,5 @@
 require "fling/version"
 
+# Simple secret sharing over Tahoe-LAFS
 module Fling
-  # Your code goes here...
 end
