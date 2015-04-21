@@ -1,5 +1,6 @@
 Fling
 =====
+[![Build Status](https://travis-ci.org/cryptosphere/fling.svg)](https://travis-ci.org/cryptosphere/fling)
 
 Simple secret sharing over Tahoe-LAFS.
 
