@@ -5,7 +5,8 @@ module Fling
   class CLI < Thor
     desc :setup, "Install Tahoe-LAFS"
     def setup
-      puts "Installing Tahoe!"
+      require "fling/setup"
+      Setup.run
     end
   end
 end
