@@ -3,3 +3,10 @@ LineLength:
   
 Style/StringLiterals:
   EnforcedStyle: double_quotes
+
+Metrics/MethodLength:
+  CountComments: false
+  Max: 20
+
+Metrics/AbcSize:
+  Enabled: false

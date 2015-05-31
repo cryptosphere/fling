@@ -1,4 +1,5 @@
 require "json"
+require "uri"
 
 module Fling
   # Configuration for the local Tahoe cluster
@@ -20,6 +21,21 @@ module Fling
       CONFIG_KEYS.each do |key|
         fail ArgumentError, "missing key: #{key}" unless options[key]
         instance_variable_set("@#{key}", options[key])
+      end
+
+      fail ConfigError, "bad introducer: #{@introducer}" if URI(@introducer).scheme != "pb"
+      fail ConfigError, "bad dropcap: #{@dropcap}" unless @dropcap.start_with?("URI:DIR2:")
+
+      %w(convergence salt).each do |key|
+        b32_value = options[key]
+
+        begin
+          value = Encoding.decode(b32_value)
+        rescue
+          raise ConfigError, "bad #{key} (base32 error): #{b32_value}"
+        end
+
+        fail ConfigError, "bad #{key} (wrong size): #{b32_value}" if value.size != 32
       end
     end
   end
