@@ -1,3 +1,7 @@
+0.0.4 (2015-06-13)
+------------------
+* Initial 'fling provision' support
+
 0.0.3 (2015-05-31)
 ------------------
 * Update to Tahoe-LAFS 1.10.1a1
