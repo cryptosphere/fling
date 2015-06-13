@@ -6,10 +6,29 @@ module Fling
   class Box
     attr_reader :key, :fingerprint
 
+    SALT_SIZE = 32
+    FINGERPRINT_SIZE = 32
+
+    SCRYPT_OPSLIMIT = 2**25
+    SCRYPT_MEMLIMIT = 2**30
+
+    def self.encrypt(password, plaintext, options = {})
+      salt = RbNaCl::Random.random_bytes(SALT_SIZE)
+      box = new(password, salt, options)
+      salt + box.encrypt(plaintext)
+    end
+
+    def self.decrypt(password, ciphertext, options = {})
+      salt = ciphertext[0, SALT_SIZE]
+      ciphertext = ciphertext[SALT_SIZE, ciphertext.length - SALT_SIZE]
+      box = new(password, salt, options)
+      box.decrypt(ciphertext)
+    end
+
     def initialize(password, salt, options = {})
       opts = {
-        scrypt_opslimit: 2**25,
-        scrypt_memlimit: 2**30
+        scrypt_opslimit: SCRYPT_OPSLIMIT,
+        scrypt_memlimit: SCRYPT_MEMLIMIT
       }.merge(options)
 
       @key = RbNaCl::PasswordHash.scrypt(
@@ -20,7 +39,7 @@ module Fling
         RbNaCl::SecretBox::KEYBYTES
       )
 
-      @fingerprint = Encoding.encode(RbNaCl::Hash.blake2b(@key, digest_size: 32))
+      @fingerprint = Encoding.encode(RbNaCl::Hash.blake2b(@key, digest_size: FINGERPRINT_SIZE))
     end
 
     def encrypt(data = {})

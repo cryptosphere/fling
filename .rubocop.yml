@@ -4,6 +4,9 @@ LineLength:
 Style/StringLiterals:
   EnforcedStyle: double_quotes
 
+Style/AlignParameters:
+  Enabled: false
+
 Metrics/MethodLength:
   CountComments: false
   Max: 20
