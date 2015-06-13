@@ -1,4 +1,4 @@
 # Simple secret sharing over Tahoe-LAFS
 module Fling
-  VERSION = "0.0.4"
+  VERSION = "0.0.5"
 end

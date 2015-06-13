@@ -1,3 +1,7 @@
+0.0.5 (2015-06-13)
+------------------
+* Fling::Config.decrypt
+
 0.0.4 (2015-06-13)
 ------------------
 * Initial 'fling provision' support
