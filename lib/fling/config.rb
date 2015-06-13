@@ -6,6 +6,9 @@ require "rbnacl"
 module Fling
   # Configuration for the local Tahoe cluster
   class Config
+    BEGIN_MARKER = "-----BEGIN ENCRYPTED FLING CONFIGURATION-----\n"
+    END_MARKER   = "------END ENCRYPTED FLING CONFIGURATION------\n"
+
     CONFIG_KEYS = %w(introducer convergence salt dropcap)
     attr_reader(*CONFIG_KEYS)
 
@@ -20,12 +23,17 @@ module Fling
     end
 
     # Generate an encrypted configuration
-    def self.generate_encrypted(password, config)
+    def self.encrypt(password, config)
       ciphertext = Box.encrypt(password, generate_json(config))
+      BEGIN_MARKER + Base64.encode64(ciphertext) + END_MARKER
+    end
 
-      "-----BEGIN ENCRYPTED FLING CONFIGURATION-----\n" +
-      Base64.encode64(ciphertext) +
-      "------END ENCRYPTED FLING CONFIGURATION------\n"
+    # Decrypt an encrypted configuration
+    def self.decrypt(password, ciphertext)
+      matches = ciphertext.match(/#{BEGIN_MARKER}(.*)#{END_MARKER}/m)
+      fail ConfigError, "couldn't find fling configuration" unless matches
+
+      new(Box.decrypt(password, Base64.decode64(matches[1])))
     end
 
     # Generate a JSON configuration

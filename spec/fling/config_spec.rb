@@ -5,6 +5,7 @@ RSpec.describe Fling::Config do
   let(:convergence) { "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" }
   let(:salt)        { "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" }
   let(:dropcap)     { "URI:DIR2:#{'x' * 26}:#{'x' * 52}" }
+  let(:password)    { "squeamish ossifrage" }
 
   it "parses JSON" do
     config = described_class.from_json fixture("fling.json")
@@ -17,6 +18,18 @@ RSpec.describe Fling::Config do
 
   it "raises ArgumentError if a required key is missing" do
     expect { described_class.new("bogus" => "true") }.to raise_error(ArgumentError)
+  end
+
+  it "encrypts and decrypts configurations" do
+    json = JSON.parse(fixture("fling.json"))
+
+    ciphertext = described_class.encrypt(password, json)
+    config = described_class.decrypt(password, ciphertext)
+
+    expect(config.introducer).to eq introducer
+    expect(config.convergence).to eq convergence
+    expect(config.salt).to eq salt
+    expect(config.dropcap).to eq dropcap
   end
 
   context "ConfigError" do

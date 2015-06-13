@@ -20,7 +20,7 @@ module Fling
 
       say "\nGenerating encrypted config, please wait..."
 
-      config = Config.generate_encrypted(
+      config = Config.encrypt(
         password,
         "introducer"  => introducer,
         "dropcap"     => dropcap,
