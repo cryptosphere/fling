@@ -6,7 +6,7 @@ module Fling
   module Setup
     module_function
 
-    TAHOE_VERSION = "1.10.1a1"
+    TAHOE_VERSION = "1.10.1"
     TAHOE_DIR     = "allmydata-tahoe-#{TAHOE_VERSION}"
     TAHOE_ZIP     = "#{TAHOE_DIR}.zip"
     TAHOE_SRC     = "https://tahoe-lafs.org/source/tahoe-lafs/tarballs/#{TAHOE_ZIP}"
