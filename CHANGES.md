@@ -1,3 +1,7 @@
+0.1.2 (2015-06-25)
+------------------
+* Remove "console" and "setup" binstubs
+
 0.1.1 (2015-06-25)
 ------------------
 * Initial 'fling open' command
