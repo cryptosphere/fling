@@ -1,3 +1,7 @@
+0.1.1 (2015-06-25)
+------------------
+* Initial 'fling open' command
+
 0.1.0 (2015-06-24)
 ------------------
 * Create initial ~/.fling.yml during 'fling config'
