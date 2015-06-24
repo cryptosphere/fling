@@ -10,9 +10,12 @@ Style/AlignParameters:
 Style/MultilineOperationIndentation:
   Enabled: false
 
+Style/AsciiComments:
+  Enabled: false
+
 Metrics/MethodLength:
   CountComments: false
-  Max: 20
+  Max: 40
 
 Metrics/AbcSize:
   Enabled: false

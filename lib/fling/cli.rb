@@ -39,10 +39,10 @@ module Fling
     def config(file_or_uri)
       require "fling/install"
 
-      if file_or_uri[/\Ahttps:\/\//]
+      if file_or_uri[%r{\Ahttps://}]
         uri = URI(file_or_uri)
         ciphertext = Net::HTTP.get(uri)
-      elsif file_or_uri[/\Ahttp:\/\//] # ಠ_ಠ
+      elsif file_or_uri[%r{\Ahttp://}] # ಠ_ಠ
         say "Friends don't let friends use http://"
         exit 1
       else # Perhaps it's a file?

@@ -37,7 +37,7 @@ module Fling
 
       new(Box.decrypt(password, Base64.decode64(matches[1])))
     rescue RbNaCl::CryptoError # bad password
-      fail ConfigError, "couldn't decrypt configuration (corrupted file or bad password?)"
+      raise ConfigError, "couldn't decrypt configuration (corrupted file or bad password?)"
     end
 
     # Generate a JSON configuration
