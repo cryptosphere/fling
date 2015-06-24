@@ -1,6 +1,7 @@
 require "fling"
 require "thor"
 require "uri"
+require "cgi"
 require "net/http"
 require "yaml"
 
@@ -81,6 +82,30 @@ module Fling
 
       say "Created #{config_dir}!"
       say "Start Tahoe by running 'tahoe start'"
+    end
+
+    desc "open [ALIAS]", "Open the Tahoe-LAFS web UI (possibly showing a particular alias)"
+    def open(alias_name = nil)
+      require "launchy"
+      uri = "http://127.0.0.1:3456"
+
+      if alias_name
+        aliases = YAML.load_file(File.expand_path("~/.tahoe/private/aliases"))
+        unless aliases[alias_name]
+          say "Error: no such alias: #{alias_name}"
+          say "Valid aliases are:"
+
+          aliases.keys.each do |key|
+            say "  #{key}"
+          end
+
+          exit 1
+        end
+
+        uri += "/uri/#{CGI.escape(aliases[alias_name])}"
+      end
+
+      Launchy.open(uri)
     end
   end
 end
