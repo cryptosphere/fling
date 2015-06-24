@@ -3,7 +3,7 @@ require "fileutils"
 
 module Fling
   # Central utilities for Tahoe-LAFS setup
-  module Setup
+  module Install
     module_function
 
     TAHOE_VERSION = "1.10.1"

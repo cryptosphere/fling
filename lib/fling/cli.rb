@@ -6,10 +6,10 @@ require "net/http"
 module Fling
   # The Fling Command Line Interface
   class CLI < Thor
-    desc :setup, "Install Tahoe-LAFS"
-    def setup
-      require "fling/setup"
-      Setup.run
+    desc :install, "Install Tahoe-LAFS"
+    def install
+      require "fling/install"
+      Install.run
       say "Now run 'fling config [file or url]' to configure Tahoe-LAFS"
     end
 
@@ -37,6 +37,8 @@ module Fling
 
     desc "config FILE_OR_URL", "Configure Fling from an encrypted configuration file"
     def config(file_or_uri)
+      require "fling/install"
+
       if file_or_uri[/\Ahttps:\/\//]
         uri = URI(file_or_uri)
         ciphertext = Net::HTTP.get(uri)

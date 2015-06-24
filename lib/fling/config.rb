@@ -69,9 +69,7 @@ module Fling
 
     # Render the configuration to the given path
     def render(path)
-      require "fling/setup"
-
-      tahoe_bin = File.expand_path("~/#{Fling::Setup::TAHOE_DIR}/bin/tahoe")
+      tahoe_bin = File.expand_path("~/#{Fling::Install::TAHOE_DIR}/bin/tahoe")
       system "#{tahoe_bin} create-node > /dev/null"
 
       @nickname = `whoami`
