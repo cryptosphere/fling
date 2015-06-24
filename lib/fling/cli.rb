@@ -2,6 +2,7 @@ require "fling"
 require "thor"
 require "uri"
 require "net/http"
+require "yaml"
 
 module Fling
   # The Fling Command Line Interface
@@ -65,13 +66,18 @@ module Fling
         exit 1
       end
 
-      config_dir = File.expand_path("~/.tahoe")
+      base_dir   = File.expand_path("~")
+      config_dir = File.join(base_dir, ".tahoe")
       if File.exist?(config_dir)
         say "Error: #{config_dir} already exists"
         exit 1
       end
 
       config.render(config_dir)
+
+      File.open(File.join(base_dir, ".fling.yml"), "w", 0600) do |file|
+        file << YAML.dump(salt: config.salt)
+      end
 
       say "Created #{config_dir}!"
       say "Start Tahoe by running 'tahoe start'"
