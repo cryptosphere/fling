@@ -1,3 +1,8 @@
+0.0.7 (2015-06-23)
+------------------
+* Rename 'fling setup' to 'fling install'
+* Initial 'fling config' command
+
 0.0.6 (2015-06-16)
 ------------------
 * Update to Tahoe-LAFS 1.10.1
