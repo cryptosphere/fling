@@ -29,6 +29,14 @@ module Fling
       ohai "Configuring Tahoe-LAFS"
       system "cd #{dir} && python setup.py build"
 
+      ohai "Linking 'tahoe' executable to ~/bin/tahoe..."
+
+      user_bin  = File.expand_path("~/bin")
+      tahoe_bin = File.expand_path("~/#{TAHOE_DIR}/bin")
+
+      FileUtils.mkdir_p(user_bin)
+      FileUtils.ln_sf(File.join(tahoe_bin, "tahoe"), File.join(user_bin, "tahoe"))
+
       ohai "Tahoe-LAFS is ready to roll."
     end
   end
