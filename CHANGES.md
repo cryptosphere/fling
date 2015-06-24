@@ -1,3 +1,7 @@
+0.0.9 (2015-06-23)
+------------------
+* Initial tahoe.cfg.erb template
+
 0.0.8 (2015-06-23)
 ------------------
 * Symlink 'tahoe' executable into ~/bin/tahoe
