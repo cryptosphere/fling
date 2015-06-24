@@ -1,3 +1,7 @@
+0.0.8 (2015-06-23)
+------------------
+* Symlink 'tahoe' executable into ~/bin/tahoe
+
 0.0.7 (2015-06-23)
 ------------------
 * Rename 'fling setup' to 'fling install'
