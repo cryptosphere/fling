@@ -2,12 +2,14 @@ require "json"
 require "uri"
 require "base64"
 require "rbnacl"
+require "fileutils"
+require "erb"
 
 module Fling
   # Configuration for the local Tahoe cluster
   class Config
     BEGIN_MARKER = "-----BEGIN ENCRYPTED FLING CONFIGURATION-----\n"
-    END_MARKER   = "------END ENCRYPTED FLING CONFIGURATION------\n"
+    END_MARKER   = "------END ENCRYPTED FLING CONFIGURATION------"
 
     CONFIG_KEYS = %w(introducer convergence salt dropcap)
     attr_reader(*CONFIG_KEYS)
@@ -31,9 +33,11 @@ module Fling
     # Decrypt an encrypted configuration
     def self.decrypt(password, ciphertext)
       matches = ciphertext.match(/#{BEGIN_MARKER}(.*)#{END_MARKER}/m)
-      fail ConfigError, "couldn't find fling configuration" unless matches
+      fail ConfigError, "couldn't find fling configuration (corrupted file?)" unless matches
 
       new(Box.decrypt(password, Base64.decode64(matches[1])))
+    rescue RbNaCl::CryptoError # bad password
+      fail ConfigError, "couldn't decrypt configuration (corrupted file or bad password?)"
     end
 
     # Generate a JSON configuration
@@ -61,6 +65,26 @@ module Fling
 
         fail ConfigError, "bad #{key} (wrong size): #{b32_value}" if value.size != 32
       end
+    end
+
+    # Render the configuration to the given path
+    def render(path)
+      require "fling/setup"
+
+      tahoe_bin = File.expand_path("~/#{Fling::Setup::TAHOE_DIR}/bin/tahoe")
+      system "#{tahoe_bin} create-node > /dev/null"
+
+      @nickname = `whoami`
+      @introducer_furl = introducer
+
+      config_template = File.expand_path("../../../templates/tahoe.cfg.erb", __FILE__)
+      tahoe_config = ERB.new(File.read(config_template)).result(binding)
+
+      File.open(File.join(path, "tahoe.cfg"), "w", 0600) { |file| file << tahoe_config }
+
+      secrets = File.join(path, "private")
+      File.open(File.join(secrets, "convergence"), "w", 0600) { |file| file << convergence }
+      File.open(File.join(secrets, "aliases"), "w", 0600) { |file| file << "dropcap: #{dropcap}" }
     end
 
     def as_json

@@ -1,5 +1,7 @@
 require "fling"
 require "thor"
+require "uri"
+require "net/http"
 
 module Fling
   # The Fling Command Line Interface
@@ -8,6 +10,7 @@ module Fling
     def setup
       require "fling/setup"
       Setup.run
+      say "Now run 'fling config [file or url]' to configure Tahoe-LAFS"
     end
 
     desc "provision FILE", "Create encrypted Fling configuration"
@@ -30,6 +33,46 @@ module Fling
 
       File.open(config_file, "w") { |file| file << config }
       say "Created #{config_file}"
+    end
+
+    desc "config FILE_OR_URL", "Configure Fling from an encrypted configuration file"
+    def config(file_or_uri)
+      if file_or_uri[/\Ahttps:\/\//]
+        uri = URI(file_or_uri)
+        ciphertext = Net::HTTP.get(uri)
+      elsif file_or_uri[/\Ahttp:\/\//] # ಠ_ಠ
+        say "Friends don't let friends use http://"
+        exit 1
+      else # Perhaps it's a file?
+        unless File.exist?(file_or_uri)
+          say "No such file: #{file_or_uri}"
+          exit 1
+        end
+
+        ciphertext = File.read(file_or_uri)
+      end
+
+      say "Loaded #{file_or_uri}"
+      password = ask "Please enter the password to decrypt the config:", echo: false
+      say # newline
+
+      begin
+        config = Config.decrypt(password, ciphertext)
+      rescue Fling::ConfigError => ex
+        say "Error: Couldn't decrypt config: #{ex}"
+        exit 1
+      end
+
+      config_dir = File.expand_path("~/.tahoe")
+      if File.exist?(config_dir)
+        say "Error: #{config_dir} already exists"
+        exit 1
+      end
+
+      config.render(config_dir)
+
+      say "Created #{config_dir}!"
+      say "Start Tahoe by running 'tahoe start'"
     end
   end
 end
