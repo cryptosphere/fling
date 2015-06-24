@@ -1,3 +1,7 @@
+0.1.0 (2015-06-24)
+------------------
+* Create initial ~/.fling.yml during 'fling config'
+
 0.0.9 (2015-06-23)
 ------------------
 * Initial tahoe.cfg.erb template
