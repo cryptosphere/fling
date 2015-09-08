@@ -4,10 +4,9 @@ Fling
 [![Code Climate](https://codeclimate.com/github/cryptosphere/fling/badges/gpa.svg)](https://codeclimate.com/github/cryptosphere/fling)
 [![Coverage Status](https://coveralls.io/repos/cryptosphere/fling/badge.svg)](https://coveralls.io/r/cryptosphere/fling)
 
-Simple secret sharing over Tahoe-LAFS.
+Simple secret sharing with password-based authentication.
 
-Fling is a system for automating the exchange of files and directories over
-Tahoe-LAFS, a distributed encrypted filesystem.
+Fling provides end-to-end encrypted file sharing with a simple-to-run server.
 
 ## Is it any good?
 
@@ -35,21 +34,7 @@ Or install it yourself as:
 
 ## Usage
 
-Once fling has been installed, you can use it to install a local Tahoe-LAFS
-client by running the following command:
-
-    $ fling install
-
-(NOTE: This command is presently only supported on OS X)
-
-This will download and install a local copy of Tahoe-LAFS.
-
-After installing Tahoe-LAFS, you can configure your local instance from
-an administrator-supplied config file with the following command:
-
-    $ fling config https://uri.to/your/orgs.fling
-
-(NOTE: See below for first-time setup)
+Coming soon!
 
 ## Contributing
 
